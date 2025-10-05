@@ -274,10 +274,7 @@ const App: React.FC = () => {
       case GamePhase.PLAYING:
         const currentTeam = teams.find(t => t.id === currentTeamId);
         return (
-          <div className="min-h-screen bg-gray-100 text-gray-800 flex flex-col items-center p-4 md:p-8 overflow-hidden">
-            <header className="text-center mb-8">
-              <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-600">Roleta de Questões</h1>
-            </header>
+          <div className={`min-h-screen ${isRouletteFocused ? 'bg-white' : 'bg-gray-100'} text-gray-800 flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden transition-colors duration-700 ease-in-out`}>
             <main className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
               <div className={`lg:col-span-1 flex flex-col items-center gap-8 transition-all duration-700 ease-in-out ${isRouletteFocused ? 'lg:col-span-3' : ''}`}>
                   <Roulette 
@@ -324,7 +321,7 @@ const App: React.FC = () => {
                 />
               </div>
             </main>
-            <footer className="text-center mt-12 text-gray-500 text-sm">
+            <footer className={`text-center mt-12 text-gray-500 text-sm transition-opacity duration-300 ${isRouletteFocused ? 'opacity-0 invisible' : 'opacity-100'}`}>
               <p>Desenvolvido para atividades educacionais dinâmicas.</p>
             </footer>
              {showContinuePrompt && (

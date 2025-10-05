@@ -18,7 +18,7 @@ const PointerIcon = () => (
 
 const Roulette: React.FC<RouletteProps> = ({ onSpin, spinning, rotation, disabled }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-12 p-6 bg-white rounded-2xl shadow-lg">
+    <div className={`flex flex-col items-center justify-center transition-all duration-500 ease-in-out ${spinning ? 'p-0 gap-0' : 'p-6 gap-12 bg-white rounded-2xl shadow-lg'}`}>
       <div className="relative flex items-center justify-center">
         <PointerIcon />
         <div 
@@ -41,13 +41,15 @@ const Roulette: React.FC<RouletteProps> = ({ onSpin, spinning, rotation, disable
           <div className="absolute w-20 h-20 bg-gray-600 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-4 border-gray-400"></div>
         </div>
       </div>
-      <button 
-        onClick={onSpin}
-        disabled={spinning || disabled}
-        className="px-12 py-4 bg-indigo-600 text-white font-bold text-xl rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-105 disabled:scale-100"
-      >
-        {spinning ? 'Girando...' : 'Girar Roleta'}
-      </button>
+      {!spinning && (
+        <button 
+          onClick={onSpin}
+          disabled={disabled}
+          className="px-12 py-4 bg-indigo-600 text-white font-bold text-xl rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-105 disabled:scale-100"
+        >
+          Girar Roleta
+        </button>
+      )}
     </div>
   );
 };
