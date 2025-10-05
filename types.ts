@@ -1,5 +1,4 @@
-
-// FIX: Removed self-import of 'Question' that was causing a conflict.
+// FIX: Removed self-import that caused declaration conflicts for 'Difficulty' and 'Question'.
 export enum Difficulty {
   EASY = 'Verde',
   MEDIUM = 'Amarelo',
@@ -34,6 +33,7 @@ export interface Team {
   name: string;
   score: number;
   questionsAnswered: number;
+  incorrectAnswers: number;
   color: {
     bg: string;
     text: string;

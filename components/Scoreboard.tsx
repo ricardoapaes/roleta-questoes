@@ -21,7 +21,6 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ teams, currentTeamId }) => {
     for (const el of Array.from(teamElements)) {
       const teamId = (el as HTMLElement).dataset.teamId;
       if (teamId) {
-        // FIX: Cast element to HTMLElement to access getBoundingClientRect, fixing 'unknown' type error.
         newRects[parseInt(teamId, 10)] = (el as HTMLElement).getBoundingClientRect();
       }
     }
@@ -46,7 +45,20 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ teams, currentTeamId }) => {
             requestAnimationFrame(() => {
               // P - Play: Remove the transform, allowing it to animate to its new (0,0) position
               (el as HTMLElement).style.transform = '';
-              (el as HTMLElement).style.transition = 'transform 500ms ease-in-out';
+              const isScoringTeam = id === currentTeamId;
+
+              if (isScoringTeam) {
+                // Special animation for the scoring team
+                (el as HTMLElement).style.transition = 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1)';
+                (el as HTMLElement).classList.add('relative', 'z-10', 'scale-105', 'shadow-lg');
+                
+                setTimeout(() => {
+                  (el as HTMLElement).classList.remove('relative', 'z-10', 'scale-105', 'shadow-lg');
+                }, 600);
+              } else {
+                // Standard animation for other teams
+                (el as HTMLElement).style.transition = 'transform 500ms ease-in-out';
+              }
             });
           });
         }
@@ -66,7 +78,7 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ teams, currentTeamId }) => {
           <div
             key={team.id}
             data-team-id={team.id}
-            className={`flex justify-between items-center p-3 rounded-lg ${
+            className={`flex justify-between items-center p-3 rounded-lg transition-all duration-300 ${
               team.id === currentTeamId ? `${team.color.lightBg} ring-2 ${team.color.ring}` : 'bg-gray-50'
             }`}
             aria-live="polite"
@@ -76,9 +88,19 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ teams, currentTeamId }) => {
               {team.name}
               {team.id === currentTeamId && <span className="ml-1 text-sm font-normal animate-pulse">(Sua vez)</span>}
             </span>
-            <span className={`px-3 py-1 rounded-full font-extrabold text-lg ${team.id === currentTeamId ? `${team.color.bg} text-white` : 'bg-gray-200 text-gray-800'}`}>
-              {team.score}
-            </span>
+            <div className="flex items-center gap-3">
+              {team.incorrectAnswers > 0 && (
+                <span className="flex items-center text-red-500 font-bold text-sm" title={`${team.incorrectAnswers} respostas erradas`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                  <span>{team.incorrectAnswers}</span>
+                </span>
+              )}
+              <span className={`px-3 py-1 rounded-full font-extrabold text-lg transition-colors duration-300 ${team.id === currentTeamId ? `${team.color.bg} text-white` : 'bg-gray-200 text-gray-800'}`}>
+                {team.score}
+              </span>
+            </div>
           </div>
         ))}
       </div>
