@@ -7,6 +7,7 @@ import EndGameScreen from './components/EndGameScreen';
 import ClassSetup from './components/ClassSetup';
 import HistoryScreen from './components/HistoryScreen';
 import RoundTracker from './components/RoundTracker';
+import ContinuePrompt from './components/ContinuePrompt';
 import { questionBanks } from './services/questionBanks';
 import { getClasses, saveClasses } from './services/storageService';
 import { Difficulty, Question, GamePhase, Team, ClassData, GameSession } from './types';
@@ -42,6 +43,7 @@ const App: React.FC = () => {
   const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
   const [roundsPerTeam, setRoundsPerTeam] = useState<number>(10);
   const [isRouletteFocused, setIsRouletteFocused] = useState<boolean>(false);
+  const [showContinuePrompt, setShowContinuePrompt] = useState<boolean>(false);
 
   useEffect(() => {
     setAllClasses(getClasses());
@@ -148,69 +150,80 @@ const App: React.FC = () => {
     }, 700); // Focus animation duration
   }, [spinning, rotation, getQuestionByDifficulty, isQuestionAnswered]);
   
+  const endGame = useCallback((finalTeams: Team[]) => {
+    if (!selectedClass) return;
+
+    const bankSubject = questionBanks.find(bank => 
+      activeQuestions.some(aq => bank.questions.some(bq => bq.id === aq.id))
+    )?.subject || 'Desconhecido';
+
+    const newSession: GameSession = {
+      date: new Date().toLocaleDateString('pt-BR'),
+      teams: finalTeams,
+      bankSubject,
+      rounds: roundsPerTeam,
+    };
+
+    const updatedClass: ClassData = {
+      ...selectedClass,
+      gameHistory: [...selectedClass.gameHistory, newSession],
+    };
+
+    setSelectedClass(updatedClass);
+    const updatedClasses = allClasses.map(c => (c.id === updatedClass.id ? updatedClass : c));
+    setAllClasses(updatedClasses);
+    saveClasses(updatedClasses);
+    setGamePhase(GamePhase.ENDGAME);
+  }, [selectedClass, roundsPerTeam, allClasses, activeQuestions]);
+
+
   const handleQuestionAnswered = useCallback((correct: boolean) => {
     if (!currentQuestion || !selectedClass) return;
 
-    let isGameOver = false;
-    let finalTeams: Team[] = [];
-
-    setTeams(prevTeams => {
-      const newTeams = prevTeams.map(team => {
-        if (team.id === currentTeamId) {
-          const newAnsweredCount = team.questionsAnswered + 1;
-          if (team.id === prevTeams.length && newAnsweredCount >= roundsPerTeam) {
-            isGameOver = true;
-          }
-          return {
-            ...team,
-            score: correct ? team.score + POINTS_MAP[currentQuestion.difficulty] : team.score,
-            questionsAnswered: newAnsweredCount,
-          };
-        }
-        return team;
-      });
-      const sortedTeams = [...newTeams].sort((a, b) => b.score - a.score);
-      finalTeams = sortedTeams;
-      return sortedTeams;
+    const updatedTeams = teams.map(team => {
+      if (team.id === currentTeamId) {
+        return {
+          ...team,
+          score: correct ? team.score + POINTS_MAP[currentQuestion.difficulty] : team.score,
+          questionsAnswered: team.questionsAnswered + 1,
+        };
+      }
+      return team;
     });
 
+    const updatedAnsweredIds = [...selectedClass.answeredQuestionIds, currentQuestion.id];
+    const updatedClass = { ...selectedClass, answeredQuestionIds: updatedAnsweredIds };
+    setSelectedClass(updatedClass);
+    const updatedClasses = allClasses.map(c => (c.id === updatedClass.id ? updatedClass : c));
+    setAllClasses(updatedClasses);
+    saveClasses(updatedClasses);
+
+    const answeredTeam = updatedTeams.find(t => t.id === currentTeamId);
+    const isLastTeamInRound = currentTeamId === teams.length;
+    const isFinalRoundCompleted = answeredTeam && answeredTeam.questionsAnswered >= roundsPerTeam;
+
+    const sortedTeams = [...updatedTeams].sort((a, b) => b.score - a.score);
+    setTeams(sortedTeams);
     setIsQuestionAnswered(true);
-    
-    // Update answered questions for the class
-    const updatedAnsweredIds = [...(selectedClass.answeredQuestionIds || []), currentQuestion.id];
 
-    if (isGameOver) {
-      const bankSubject = questionBanks.find(b => b.questions.some(q => q.id === currentQuestion.id))?.subject || 'Desconhecido';
-      const newSession: GameSession = {
-        date: new Date().toLocaleDateString('pt-BR'),
-        teams: finalTeams,
-        bankSubject,
-        rounds: roundsPerTeam,
-      };
-
-      const updatedClass: ClassData = {
-        ...selectedClass,
-        answeredQuestionIds: updatedAnsweredIds,
-        gameHistory: [...selectedClass.gameHistory, newSession],
-      };
-
-      setSelectedClass(updatedClass);
-      const updatedClasses = allClasses.map(c => c.id === updatedClass.id ? updatedClass : c);
-      setAllClasses(updatedClasses);
-      saveClasses(updatedClasses);
-
-      setGamePhase(GamePhase.ENDGAME);
+    if (isLastTeamInRound && isFinalRoundCompleted) {
+      endGame(sortedTeams);
+    } else if (isLastTeamInRound) {
+      setShowContinuePrompt(true);
     } else {
-       // Persist answered question immediately
-      const updatedClass = { ...selectedClass, answeredQuestionIds: updatedAnsweredIds };
-      setSelectedClass(updatedClass);
-      const updatedClasses = allClasses.map(c => c.id === updatedClass.id ? updatedClass : c);
-      setAllClasses(updatedClasses);
-      saveClasses(updatedClasses);
-
       setCurrentTeamId(prevId => (prevId % teams.length) + 1);
     }
-  }, [currentQuestion, currentTeamId, teams.length, roundsPerTeam, selectedClass, allClasses]);
+  }, [currentQuestion, currentTeamId, teams, roundsPerTeam, selectedClass, allClasses, endGame]);
+
+  const handleContinueGame = useCallback(() => {
+    setShowContinuePrompt(false);
+    setCurrentTeamId(1);
+  }, []);
+
+  const handleEndGameEarly = useCallback(() => {
+    setShowContinuePrompt(false);
+    endGame(teams);
+  }, [teams, endGame]);
   
   const resetGameState = () => {
     setTeams([]);
@@ -312,6 +325,9 @@ const App: React.FC = () => {
             <footer className="text-center mt-12 text-gray-500 text-sm">
               <p>Desenvolvido para atividades educacionais dinâmicas.</p>
             </footer>
+             {showContinuePrompt && (
+              <ContinuePrompt onContinue={handleContinueGame} onEnd={handleEndGameEarly} />
+            )}
           </div>
         );
       default:
