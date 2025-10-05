@@ -33,7 +33,7 @@ export interface Team {
   name: string;
   score: number;
   questionsAnswered: number;
-  incorrectAnswers: number;
+  answerHistory: boolean[];
   color: {
     bg: string;
     text: string;

@@ -87,7 +87,7 @@ const App: React.FC = () => {
       ...teamConfig,
       score: 0,
       questionsAnswered: 0,
-      incorrectAnswers: 0,
+      answerHistory: [],
       color: TEAM_COLORS[i % TEAM_COLORS.length],
     }));
     setTeams(newTeams);
@@ -187,7 +187,7 @@ const App: React.FC = () => {
           ...team,
           score: correct ? team.score + POINTS_MAP[currentQuestion.difficulty] : team.score,
           questionsAnswered: team.questionsAnswered + 1,
-          incorrectAnswers: correct ? team.incorrectAnswers : team.incorrectAnswers + 1,
+          answerHistory: [...team.answerHistory, correct],
         };
       }
       return team;

@@ -88,15 +88,15 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ teams, currentTeamId }) => {
               {team.name}
               {team.id === currentTeamId && <span className="ml-1 text-sm font-normal animate-pulse">(Sua vez)</span>}
             </span>
-            <div className="flex items-center gap-3">
-              {team.incorrectAnswers > 0 && (
-                <span className="flex items-center text-red-500 font-bold text-sm" title={`${team.incorrectAnswers} respostas erradas`}>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                  <span>{team.incorrectAnswers}</span>
-                </span>
-              )}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5" title="Últimas 5 rodadas">
+                {team.answerHistory.slice(-5).map((isCorrect, index) => (
+                  <div
+                    key={index}
+                    className={`w-3 h-3 rounded-full shadow-inner ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`}
+                  ></div>
+                ))}
+              </div>
               <span className={`px-3 py-1 rounded-full font-extrabold text-lg transition-colors duration-300 ${team.id === currentTeamId ? `${team.color.bg} text-white` : 'bg-gray-200 text-gray-800'}`}>
                 {team.score}
               </span>
