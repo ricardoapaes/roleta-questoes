@@ -32,6 +32,7 @@ const App: React.FC = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [isQuestionAnswered, setIsQuestionAnswered] = useState<boolean>(true);
   const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
   const [roundsPerTeam, setRoundsPerTeam] = useState<number>(10);
 
@@ -52,6 +53,8 @@ const App: React.FC = () => {
     setTeams(newTeams);
     setCurrentTeamId(1);
     setGamePhase(GamePhase.PLAYING);
+    setIsQuestionAnswered(true);
+    setCurrentQuestion(null);
   }, []);
 
   const getQuestionByDifficulty = useCallback((difficulty: Difficulty): Question => {
@@ -68,6 +71,7 @@ const App: React.FC = () => {
     if (spinning) return;
 
     setSpinning(true);
+    setIsQuestionAnswered(false);
 
     const extraRotations = 5;
     const newRotation = rotation + (360 * extraRotations) + Math.random() * 360;
@@ -115,11 +119,12 @@ const App: React.FC = () => {
       return newTeams;
     });
 
+    setIsQuestionAnswered(true);
+
     if (isGameOver) {
       setGamePhase(GamePhase.ENDGAME);
     } else {
       setCurrentTeamId(prevId => (prevId % teams.length) + 1);
-      setCurrentQuestion(null);
     }
   }, [currentQuestion, currentTeamId, teams.length, roundsPerTeam]);
 
@@ -131,6 +136,7 @@ const App: React.FC = () => {
     setSpinning(false);
     setRotation(0);
     setActiveQuestions([]);
+    setIsQuestionAnswered(true);
   }, []);
 
   if (gamePhase === GamePhase.SETUP) {
@@ -151,31 +157,39 @@ const App: React.FC = () => {
   if (gamePhase === GamePhase.ENDGAME) {
     return <EndGameScreen teams={teams} onRestart={handleRestart} />;
   }
+  
+  const currentTeam = teams.find(t => t.id === currentTeamId);
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800 flex flex-col items-center p-4 md:p-8">
       <header className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-600">Roleta de Questões</h1>
-        <p className="text-lg text-gray-600 mt-2">
-          Vez da <span className="font-bold" style={{color: teams.find(t => t.id === currentTeamId)?.color.text.replace('text-','').replace('-700','')}}>{teams.find(t => t.id === currentTeamId)?.name}</span>!
-           <span className="text-base text-gray-500 ml-2"> (Rodada {teams.find(t => t.id === currentTeamId)?.questionsAnswered + 1} de {roundsPerTeam})</span>
-        </p>
       </header>
       <main className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center gap-8">
           <Roulette 
             onSpin={handleSpin} 
             spinning={spinning} 
             rotation={rotation}
-            disabled={!!currentQuestion}
+            disabled={spinning || (!!currentQuestion && !isQuestionAnswered)}
           />
+          <Scoreboard teams={teams} currentTeamId={currentTeamId} />
         </div>
-        <div className="flex flex-col gap-8">
-            <Scoreboard teams={teams} currentTeamId={currentTeamId} />
-            <QuestionDisplay 
-                question={currentQuestion} 
-                onQuestionAnswered={handleQuestionAnswered}
-            />
+        <div>
+          {currentTeam && (
+            <div className={`w-full p-5 rounded-2xl shadow-lg text-center mb-8 ${currentTeam.color.lightBg} border-2 ${currentTeam.color.ring}`}>
+                <h2 className={`text-2xl font-bold ${currentTeam.color.text}`}>
+                    Vez da {currentTeam.name}!
+                </h2>
+                <p className="text-lg text-gray-600 mt-1">
+                    Rodada {currentTeam.questionsAnswered + 1} de {roundsPerTeam}
+                </p>
+            </div>
+          )}
+          <QuestionDisplay 
+              question={currentQuestion} 
+              onQuestionAnswered={handleQuestionAnswered}
+          />
         </div>
       </main>
       <footer className="text-center mt-12 text-gray-500 text-sm">

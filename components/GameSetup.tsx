@@ -64,7 +64,7 @@ const GameSetup: React.FC<GameSetupProps> = ({ onStartGame, banks }) => {
             id="questionBank"
             value={selectedBank}
             onChange={(e) => setSelectedBank(e.target.value)}
-            className="w-full px-4 py-3 text-left text-lg border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+            className="w-full px-4 py-3 text-left text-lg text-gray-800 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white"
             aria-label="Tema das questões"
           >
             {banks.map(bank => (
