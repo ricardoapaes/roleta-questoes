@@ -10,6 +10,7 @@ export interface Question {
   text: string;
   options: { [key: string]: string };
   answer: string;
+  explanation: string;
 }
 
 export interface QuestionBank {
@@ -20,13 +21,15 @@ export interface QuestionBank {
 
 export enum GamePhase {
   SETUP = 'SETUP',
-  PLAYING = 'PLAYING'
+  PLAYING = 'PLAYING',
+  ENDGAME = 'ENDGAME'
 }
 
 export interface Team {
   id: number;
   name: string;
   score: number;
+  questionsAnswered: number;
   color: {
     bg: string;
     text: string;

@@ -3,6 +3,7 @@ import Roulette from './components/Roulette';
 import QuestionDisplay from './components/QuestionDisplay';
 import GameSetup from './components/GameSetup';
 import Scoreboard from './components/Scoreboard';
+import EndGameScreen from './components/EndGameScreen';
 import { questionBanks } from './services/questionBanks';
 import { Difficulty, Question, GamePhase, Team } from './types';
 
@@ -32,17 +33,20 @@ const App: React.FC = () => {
   const [rotation, setRotation] = useState<number>(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [activeQuestions, setActiveQuestions] = useState<Question[]>([]);
+  const [roundsPerTeam, setRoundsPerTeam] = useState<number>(10);
 
-  const handleStartGame = useCallback((teamCount: number, bankId: string) => {
+  const handleStartGame = useCallback((teamCount: number, bankId: string, rounds: number) => {
     const selectedBank = questionBanks.find(b => b.id === bankId);
     if (!selectedBank) return;
     
     setActiveQuestions(selectedBank.questions);
+    setRoundsPerTeam(rounds);
 
     const newTeams = Array.from({ length: teamCount }, (_, i) => ({
       id: i + 1,
       name: `Equipe ${i + 1}`,
       score: 0,
+      questionsAnswered: 0,
       color: TEAM_COLORS[i % TEAM_COLORS.length],
     }));
     setTeams(newTeams);
@@ -91,18 +95,43 @@ const App: React.FC = () => {
   const handleQuestionAnswered = useCallback((correct: boolean) => {
     if (!currentQuestion) return;
 
-    if (correct) {
-      const points = POINTS_MAP[currentQuestion.difficulty];
-      setTeams(prevTeams =>
-        prevTeams.map(team =>
-          team.id === currentTeamId ? { ...team, score: team.score + points } : team
-        )
-      );
+    let isGameOver = false;
+
+    setTeams(prevTeams => {
+      const newTeams = prevTeams.map(team => {
+        if (team.id === currentTeamId) {
+          const newAnsweredCount = team.questionsAnswered + 1;
+          if (team.id === prevTeams.length && newAnsweredCount >= roundsPerTeam) {
+            isGameOver = true;
+          }
+          return {
+            ...team,
+            score: correct ? team.score + POINTS_MAP[currentQuestion.difficulty] : team.score,
+            questionsAnswered: newAnsweredCount,
+          };
+        }
+        return team;
+      });
+      return newTeams;
+    });
+
+    if (isGameOver) {
+      setGamePhase(GamePhase.ENDGAME);
+    } else {
+      setCurrentTeamId(prevId => (prevId % teams.length) + 1);
+      setCurrentQuestion(null);
     }
-    
-    setCurrentTeamId(prevId => (prevId % teams.length) + 1);
+  }, [currentQuestion, currentTeamId, teams.length, roundsPerTeam]);
+
+  const handleRestart = useCallback(() => {
+    setGamePhase(GamePhase.SETUP);
+    setTeams([]);
+    setCurrentTeamId(1);
     setCurrentQuestion(null);
-  }, [currentQuestion, currentTeamId, teams.length]);
+    setSpinning(false);
+    setRotation(0);
+    setActiveQuestions([]);
+  }, []);
 
   if (gamePhase === GamePhase.SETUP) {
     return (
@@ -119,12 +148,17 @@ const App: React.FC = () => {
     );
   }
 
+  if (gamePhase === GamePhase.ENDGAME) {
+    return <EndGameScreen teams={teams} onRestart={handleRestart} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800 flex flex-col items-center p-4 md:p-8">
       <header className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-600">Roleta de Questões</h1>
         <p className="text-lg text-gray-600 mt-2">
           Vez da <span className="font-bold" style={{color: teams.find(t => t.id === currentTeamId)?.color.text.replace('text-','').replace('-700','')}}>{teams.find(t => t.id === currentTeamId)?.name}</span>!
+           <span className="text-base text-gray-500 ml-2"> (Rodada {teams.find(t => t.id === currentTeamId)?.questionsAnswered + 1} de {roundsPerTeam})</span>
         </p>
       </header>
       <main className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">

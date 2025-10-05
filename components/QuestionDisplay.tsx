@@ -33,7 +33,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionA
     );
   }
 
-  const { difficulty, text, options, answer } = question;
+  const { difficulty, text, options, answer, explanation } = question;
   const colors = difficultyColors[difficulty];
 
   const handleOptionClick = (optionKey: string) => {
@@ -44,7 +44,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionA
 
     setTimeout(() => {
       onQuestionAnswered(isCorrect);
-    }, 2000); // Delay to allow user to see the feedback
+    }, 3500); // Increased delay to allow user to read the explanation
   };
 
   const getOptionClasses = (optionKey: string) => {
@@ -87,6 +87,13 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionA
           </button>
         ))}
       </div>
+
+      {answeredOption && explanation && (
+        <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200 animate-fade-in">
+          <h3 className="font-bold text-blue-800">Explicação:</h3>
+          <p className="text-blue-700 mt-1">{explanation}</p>
+        </div>
+      )}
     </div>
   );
 };
