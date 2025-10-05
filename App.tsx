@@ -6,6 +6,7 @@ import Scoreboard from './components/Scoreboard';
 import EndGameScreen from './components/EndGameScreen';
 import ClassSetup from './components/ClassSetup';
 import HistoryScreen from './components/HistoryScreen';
+import RoundTracker from './components/RoundTracker';
 import { questionBanks } from './services/questionBanks';
 import { getClasses, saveClasses } from './services/storageService';
 import { Difficulty, Question, GamePhase, Team, ClassData, GameSession } from './types';
@@ -276,13 +277,30 @@ const App: React.FC = () => {
               </div>
               <div className={`lg:col-span-2 flex flex-col gap-8 transition-opacity duration-300 ${isRouletteFocused ? 'opacity-0 invisible h-0' : 'opacity-100 visible h-auto'}`}>
                 {currentTeam && (
-                  <div className={`w-full p-5 rounded-2xl shadow-lg text-center ${currentTeam.color.lightBg} border-2 ${currentTeam.color.ring}`}>
-                      <h2 className={`text-2xl font-bold ${currentTeam.color.text}`}>
-                          Vez da {currentTeam.name}!
-                      </h2>
-                      <p className="text-lg text-gray-600 mt-1">
-                          Rodada {currentTeam.questionsAnswered + 1} de {roundsPerTeam}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Card da Equipe */}
+                    <div className={`p-6 rounded-2xl shadow-lg flex flex-col justify-center text-center ${currentTeam.color.lightBg}`}>
+                      <span className="text-sm font-semibold uppercase tracking-wider text-gray-500">Equipe da Vez</span>
+                      <p className={`text-4xl font-extrabold mt-1 ${currentTeam.color.text}`}>
+                        {currentTeam.name}
                       </p>
+                    </div>
+
+                    {/* Card da Rodada */}
+                    <div className="p-6 rounded-2xl shadow-lg bg-white flex flex-col justify-center text-center">
+                      <span className="text-sm font-semibold uppercase tracking-wider text-gray-500">Progresso</span>
+                      <p className="text-4xl font-extrabold mt-1 text-gray-800">
+                        {currentTeam.questionsAnswered + 1}
+                        <span className="text-2xl font-medium text-gray-500">/{roundsPerTeam}</span>
+                      </p>
+                      <div className="mt-4">
+                        <RoundTracker
+                          currentRound={currentTeam.questionsAnswered + 1}
+                          totalRounds={roundsPerTeam}
+                          colorClasses={currentTeam.color}
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
                 <QuestionDisplay 
