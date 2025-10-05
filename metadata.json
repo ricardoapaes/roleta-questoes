@@ -1,0 +1,5 @@
+{
+  "name": "Roleta de Questões",
+  "description": "Uma aplicação de roleta de dificuldades para selecionar questões de múltipla escolha para alunos. Perfeito para atividades em sala de aula.",
+  "requestFramePermissions": []
+}
