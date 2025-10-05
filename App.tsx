@@ -46,7 +46,11 @@ const App: React.FC = () => {
   const [showContinuePrompt, setShowContinuePrompt] = useState<boolean>(false);
 
   useEffect(() => {
-    setAllClasses(getClasses());
+    const loadData = async () => {
+      const classesFromDb = await getClasses();
+      setAllClasses(classesFromDb);
+    };
+    loadData();
   }, []);
 
   const handleCreateClass = useCallback((name: string) => {
