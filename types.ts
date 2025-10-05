@@ -1,3 +1,5 @@
+
+// FIX: Removed self-import of 'Question' that was causing a conflict.
 export enum Difficulty {
   EASY = 'Verde',
   MEDIUM = 'Amarelo',
@@ -20,9 +22,11 @@ export interface QuestionBank {
 }
 
 export enum GamePhase {
-  SETUP = 'SETUP',
+  CLASS_SETUP = 'CLASS_SETUP',
+  GAME_SETUP = 'GAME_SETUP',
   PLAYING = 'PLAYING',
-  ENDGAME = 'ENDGAME'
+  ENDGAME = 'ENDGAME',
+  HISTORY = 'HISTORY',
 }
 
 export interface Team {
@@ -36,4 +40,19 @@ export interface Team {
     ring: string;
     lightBg: string;
   };
+}
+
+export interface GameSession {
+  date: string;
+  teams: Team[];
+  bankSubject: string;
+  rounds: number;
+}
+
+export interface ClassData {
+  id: string; // uuid
+  name: string;
+  teams: { id: number; name: string }[];
+  answeredQuestionIds: number[];
+  gameHistory: GameSession[];
 }
