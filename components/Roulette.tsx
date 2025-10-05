@@ -1,10 +1,10 @@
-
 import React from 'react';
 
 interface RouletteProps {
   onSpin: () => void;
   spinning: boolean;
   rotation: number;
+  disabled: boolean;
 }
 
 const PointerIcon = () => (
@@ -16,7 +16,7 @@ const PointerIcon = () => (
   </svg>
 );
 
-const Roulette: React.FC<RouletteProps> = ({ onSpin, spinning, rotation }) => {
+const Roulette: React.FC<RouletteProps> = ({ onSpin, spinning, rotation, disabled }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-12 p-6 bg-white rounded-2xl shadow-lg">
       <div className="relative flex items-center justify-center">
@@ -43,7 +43,7 @@ const Roulette: React.FC<RouletteProps> = ({ onSpin, spinning, rotation }) => {
       </div>
       <button 
         onClick={onSpin}
-        disabled={spinning}
+        disabled={spinning || disabled}
         className="px-12 py-4 bg-indigo-600 text-white font-bold text-xl rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-105 disabled:scale-100"
       >
         {spinning ? 'Girando...' : 'Girar Roleta'}

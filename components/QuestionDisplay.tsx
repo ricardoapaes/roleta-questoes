@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Question, Difficulty } from '../types';
 
 interface QuestionDisplayProps {
   question: Question | null;
+  onQuestionAnswered: (correct: boolean) => void;
 }
 
 const difficultyColors: Record<Difficulty, { bg: string; text: string }> = {
@@ -12,18 +12,16 @@ const difficultyColors: Record<Difficulty, { bg: string; text: string }> = {
   [Difficulty.HARD]: { bg: 'bg-red-100', text: 'text-red-800' },
 };
 
-const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question }) => {
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionAnswered }) => {
+  const [answeredOption, setAnsweredOption] = useState<string | null>(null);
   
   useEffect(() => {
-    setShowAnswer(false);
-    setSelectedOption(null);
+    setAnsweredOption(null);
   }, [question]);
 
   if (!question) {
     return (
-      <div className="w-full h-full flex items-center justify-center p-6 bg-white rounded-2xl shadow-lg">
+      <div className="w-full h-full flex items-center justify-center p-6 bg-white rounded-2xl shadow-lg min-h-[400px]">
         <div className="text-center">
           <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -38,17 +36,28 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question }) => {
   const { difficulty, text, options, answer } = question;
   const colors = difficultyColors[difficulty];
 
+  const handleOptionClick = (optionKey: string) => {
+    if (answeredOption) return;
+
+    setAnsweredOption(optionKey);
+    const isCorrect = optionKey === answer;
+
+    setTimeout(() => {
+      onQuestionAnswered(isCorrect);
+    }, 2000); // Delay to allow user to see the feedback
+  };
+
   const getOptionClasses = (optionKey: string) => {
-    if (!showAnswer) {
-      return selectedOption === optionKey ? 'bg-indigo-200 ring-2 ring-indigo-500' : 'bg-gray-100 hover:bg-gray-200';
+    if (!answeredOption) {
+      return 'bg-gray-100 hover:bg-indigo-100 hover:ring-2 hover:ring-indigo-300';
     }
     if (optionKey === answer) {
-      return 'bg-green-200 ring-2 ring-green-600 text-green-900 font-bold';
+      return 'bg-green-200 ring-2 ring-green-600 text-green-900 font-bold animate-pulse';
     }
-    if (selectedOption === optionKey && selectedOption !== answer) {
-      return 'bg-red-200 ring-2 ring-red-500';
+    if (optionKey === answeredOption && optionKey !== answer) {
+      return 'bg-red-200 ring-2 ring-red-500 text-red-900';
     }
-    return 'bg-gray-100';
+    return 'bg-gray-100 opacity-60';
   };
 
   return (
@@ -68,23 +77,15 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question }) => {
         {Object.entries(options).map(([key, value]) => (
           <button
             key={key}
-            onClick={() => !showAnswer && setSelectedOption(key)}
-            className={`p-4 rounded-lg text-left transition-all duration-300 cursor-pointer ${getOptionClasses(key)} disabled:cursor-not-allowed`}
-            disabled={showAnswer}
+            onClick={() => handleOptionClick(key)}
+            className={`p-4 rounded-lg text-left transition-all duration-300 ${getOptionClasses(key)} disabled:cursor-not-allowed`}
+            disabled={!!answeredOption}
+            aria-live="polite"
           >
             <span className="font-bold mr-3">{key}:</span>
             <span>{value}</span>
           </button>
         ))}
-      </div>
-      
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => setShowAnswer(!showAnswer)}
-          className="px-8 py-3 bg-gray-700 text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-300"
-        >
-          {showAnswer ? 'Ocultar Resposta' : 'Mostrar Resposta'}
-        </button>
       </div>
     </div>
   );
