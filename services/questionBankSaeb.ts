@@ -238,6 +238,206 @@ export const questions: Question[] = [
     answer: 'C',
     explanation: 'A área de um retângulo é calculada multiplicando-se o comprimento pela largura. Portanto, 8 cm * 5 cm = 40 cm².'
   },
+  {
+    id: 56,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Paulo quer comprar um jogo de R$90,00 e já tem R$64,00. Quanto falta para ele comprar o jogo?',
+    options: { A: 'R$34,00', B: 'R$65,00', C: 'R$26,00', D: 'R$100,00' },
+    answer: 'C',
+    explanation: 'Para descobrir o valor que falta, subtraímos o valor que Paulo já tem do valor total do jogo: R$90,00 - R$64,00 = R$26,00.'
+  },
+  {
+    id: 57,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Marta mediu seu lápis e obteve 13,5 cm. Essa medida está localizada entre quais dois números inteiros?',
+    options: { A: '12 e 13', B: '13 e 14', C: '14 e 15', D: '15 e 16' },
+    answer: 'B',
+    explanation: 'O número 13,5 é maior que o inteiro 13 e menor que o inteiro 14, portanto, está entre eles.'
+  },
+  {
+    id: 58,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Carlos comprou um micro-ondas por R$ 860,00 e decidiu pagar em 5 parcelas iguais, sem juros. Qual o valor de cada parcela?',
+    options: { A: 'R$ 172,00', B: 'R$ 4400,00', C: 'R$ 17,00', D: 'R$ 440,00' },
+    answer: 'A',
+    explanation: 'Para calcular o valor de cada parcela, divide-se o valor total pelo número de parcelas: R$ 860,00 / 5 = R$ 172,00.'
+  },
+  {
+    id: 59,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Todo mês, Cátia reserva R$ 438,00 em uma poupança. Quanto Cátia terá reservado após 12 meses?',
+    options: { A: 'R$ 876,00', B: 'R$ 4.400,00', C: 'R$ 5.256,00', D: 'R$ 440,00' },
+    answer: 'C',
+    explanation: 'Para calcular o total reservado, multiplica-se o valor mensal pelo número de meses: R$ 438,00 x 12 = R$ 5.256,00.'
+  },
+  {
+    id: 60,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Ana comeu 3/6 de uma pizza, Pedro comeu 1/2, João comeu 4/8 e Maria comeu 2/4. Quem comeu mais?',
+    options: { A: 'Ana', B: 'João', C: 'Todos comeram a mesma quantidade', D: 'Pedro' },
+    answer: 'C',
+    explanation: 'Todas as frações (3/6, 1/2, 4/8, 2/4) são equivalentes e representam a metade. Portanto, todos comeram a mesma quantidade.'
+  },
+  {
+    id: 61,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Qual número é formado pela decomposição: (4x10000) + (5x1000) + (9x100) + (7x10) + (2x1)?',
+    options: { A: '4.597', B: '45.972', C: '459.720', D: '459.072' },
+    answer: 'B',
+    explanation: 'A decomposição representa 40.000 + 5.000 + 900 + 70 + 2, que somados resultam em 45.972.'
+  },
+  {
+    id: 62,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Qual das opções é a planificação de uma pirâmide de base quadrada?',
+    options: { A: 'Um quadrado e 3 triângulos', B: 'Um retângulo e 4 triângulos', C: 'Um pentágono e 5 triângulos', D: 'Um quadrado e 4 triângulos' },
+    answer: 'D',
+    explanation: 'A pirâmide de base quadrada é formada por uma base quadrada e quatro faces triangulares. A planificação correta mostra um quadrado central com um triângulo em cada lado.'
+  },
+  {
+    id: 63,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Um abajur de 45 cm está sobre uma mesa. O comprimento da mesa equivale a aproximadamente 3 abajures. Qual o comprimento da mesa?',
+    options: { A: '50 cm', B: '60 cm', C: '135 cm', D: '300 cm' },
+    answer: 'C',
+    explanation: 'Se a mesa tem o comprimento de 3 abajures, o cálculo é: 45 cm x 3 = 135 cm.'
+  },
+  {
+    id: 64,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Lourdes fez 2,5 litros de laranjada. Quantos mililitros de laranjada ela fez?',
+    options: { A: '250 mL', B: '2500 cm', C: '2500 mL', D: '2500 L' },
+    answer: 'C',
+    explanation: 'Sabendo que 1 litro equivale a 1000 mililitros, para converter 2,5 litros para mililitros, multiplicamos por 1000: 2,5 x 1000 = 2500 mL.'
+  },
+  {
+    id: 65,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Um cubo mágico 3x3x3 é formado por bloquinhos de 1 cm³. Qual o volume total do cubo?',
+    options: { A: '9 cm³', B: '12 cm³', C: '50 cm³', D: '27 cm³' },
+    answer: 'D',
+    explanation: 'O volume do cubo é calculado multiplicando suas dimensões: 3 blocos de largura x 3 de altura x 3 de profundidade = 27 blocos. O volume total é 27 cm³.'
+  },
+  {
+    id: 66,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Um cubo 4x4x4 é formado por bloquinhos de 1 cm³. Qual o volume total do cubo?',
+    options: { A: '12 cm³', B: '16 cm³', C: '64 cm³', D: '24 cm³' },
+    answer: 'C',
+    explanation: 'O volume do cubo é 4 x 4 x 4 = 64 bloquinhos. Como cada um tem 1 cm³, o volume total é 64 cm³.'
+  },
+  {
+    id: 67,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Qual das pipas a seguir tem o formato de um hexágono (6 lados)?',
+    options: { A: 'Pipa I', B: 'Pipa II', C: 'Pipa III', D: 'Pipa IV' },
+    answer: 'A',
+    explanation: 'Um hexágono é um polígono que possui 6 lados. A pipa I é a única com essa característica.'
+  },
+  {
+    id: 68,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Numa corrida de 5 km, Murilo está na marca de 2 km. Que distância falta para ele completar o percurso?',
+    options: { A: '2,5 km', B: '3 km', C: '3,5 km', D: '6 km' },
+    answer: 'B',
+    explanation: 'Se o percurso total é de 5 km e Murilo já percorreu 2 km, a distância que falta é 5 km - 2 km = 3 km.'
+  },
+  {
+    id: 69,
+    difficulty: Difficulty.MEDIUM,
+    text: 'No dia 2 de julho, quantos dias faltam para o dia 31 do mesmo mês?',
+    options: { A: '30 dias', B: '25 dias', C: '29 dias', D: '31 dias' },
+    answer: 'C',
+    explanation: 'Para calcular os dias restantes, subtraímos o dia atual do total de dias do mês: 31 - 2 = 29 dias.'
+  },
+  {
+    id: 70,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Qual das frações representadas tem o mesmo valor que meio (0,5)?',
+    options: { A: '1/4', B: '2/4', C: '3/4', D: '1/6' },
+    answer: 'B',
+    explanation: 'Meio (0,5) é equivalente à fração 1/2. A fração 2/4, quando simplificada (dividindo o numerador e o denominador por 2), resulta em 1/2.'
+  },
+  {
+    id: 71,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Observe os quadriláteros na malha quadriculada. Qual deles não é um retângulo?',
+    options: { A: 'Figura 3', B: 'Figura 2 (Paralelogramo)', C: 'Figura 1', D: 'Figura 5' },
+    answer: 'B',
+    explanation: 'Um retângulo deve ter todos os ângulos internos de 90 graus. A figura 2 é um paralelogramo cujos ângulos não são retos.'
+  },
+  {
+    id: 72,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Qual número completa a igualdade: X + 4.738 = 12.506?',
+    options: { A: '7.768', B: '7.778', C: '7.788', D: '7.798' },
+    answer: 'A',
+    explanation: 'Para encontrar o número desconhecido, basta subtrair o número conhecido da soma total: 12.506 - 4.738 = 7.768.'
+  },
+  {
+    id: 73,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Mariana comprou 4 caixas com a mesma quantidade de lápis, totalizando 96 lápis. Se ★ é a quantidade por caixa, qual equação representa isso?',
+    options: { A: '96 + ★ = 4', B: '4 + ★ = 96', C: '4 × ★ = 96', D: '★ ÷ 4 = 96' },
+    answer: 'C',
+    explanation: 'A situação é representada pela multiplicação do número de caixas (4) pela quantidade de lápis em cada caixa (★), resultando no total de lápis (96).'
+  },
+  {
+    id: 74,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Na sequência 56, 59, 62, ..., qual número estará na 6ª posição?',
+    options: { A: '70', B: '85', C: '71', D: '95' },
+    answer: 'C',
+    explanation: 'A sequência aumenta de 3 em 3. Continuando o padrão: 56, 59, 62, 65 (4º), 68 (5º), 71 (6º).'
+  },
+  {
+    id: 75,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Marta tem 2 notas de R$50, 2 de R$20, 1 de R$10 e 3 moedas de R$1. Qual o valor total?',
+    options: { A: 'R$ 153,00', B: 'R$ 200,00', C: 'R$ 75,00', D: 'R$ 280,00' },
+    answer: 'A',
+    explanation: 'Somando os valores: (2 x 50) + (2 x 20) + (1 x 10) + (3 x 1) = 100 + 40 + 10 + 3 = R$ 153,00.'
+  },
+  {
+    id: 76,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Qual das figuras geométricas possui apenas 3 lados e 3 vértices?',
+    options: { A: 'Retângulo', B: 'Triângulo', C: 'Trapézio', D: 'Losango' },
+    answer: 'B',
+    explanation: 'Por definição, um triângulo é um polígono com 3 lados e 3 vértices (pontos de encontro dos lados).'
+  },
+  {
+    id: 77,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Em um trapézio com lados AB, BC, CD, DA, quais segmentos de reta são paralelos?',
+    options: { A: 'As bases (AB e DC)', B: 'Lados adjacentes (AB e BC)', C: 'Lados não paralelos (AD e BC)', D: 'Um lado e uma base (AD e DC)' },
+    answer: 'A',
+    explanation: 'A característica que define um trapézio é possuir um par de lados paralelos, que são chamados de bases. Neste caso, AB e DC.'
+  },
+  {
+    id: 78,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Uma maratonista corre 2km em 5 minutos. Quanto tempo, em segundos, ela leva?',
+    options: { A: '6 segundos', B: '300 segundos', C: '600 segundos', D: '100 segundos' },
+    answer: 'B',
+    explanation: 'Cada minuto tem 60 segundos. Para converter 5 minutos em segundos, multiplicamos: 5 x 60 = 300 segundos.'
+  },
+  {
+    id: 79,
+    difficulty: Difficulty.MEDIUM,
+    text: 'A roleta A tem 1/2 de chance de parar no verde. A roleta B tem 2/4 de chance. A chance de parar no verde é:',
+    options: { A: 'Maior na roleta A', B: 'Menor na roleta A', C: 'Maior na roleta B', D: 'Igual nas duas roletas' },
+    answer: 'D',
+    explanation: 'Na roleta A, a chance é de 1/2 (50%). Na roleta B, a chance é de 2/4, que ao simplificar também é 1/2 (50%). Portanto, as chances são iguais.'
+  },
+  {
+    id: 80,
+    difficulty: Difficulty.MEDIUM,
+    text: 'Sandra arrecadou R$ 668,00 e sua irmã R$ 1.595,00. Qual a diferença entre os valores?',
+    options: { A: 'R$ 933,00', B: 'R$ 1.137,00', C: 'R$ 927,00', D: 'R$ 937,00' },
+    answer: 'C',
+    explanation: 'A diferença é calculada pela subtração do menor valor do maior: 1.595 - 668 = 927.'
+  },
 
   // DIFÍCIL (Vermelho)
   {
