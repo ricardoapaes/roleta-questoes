@@ -455,5 +455,205 @@ export const questions: Question[] = [
     options: { A: 'Nenhuma alteração', B: 'Aumentou 4%', C: 'Diminuiu 4%', D: 'Diminuiu 10%' },
     answer: 'C',
     explanation: 'Suponha um preço original de R$100. Com aumento de 20%, vai para R$120. Uma diminuição de 20% sobre R$120 é R$24 (120 * 0.20). O novo preço é R$120 - R$24 = R$96. Em relação ao preço original de R$100, houve uma diminuição de 4%.'
+  },
+  {
+    id: 81,
+    difficulty: Difficulty.HARD,
+    text: 'Um casaco custa R$ 200,00. Na liquidação, ele recebeu 25% de desconto. Depois, mais 10% sobre o novo valor. Qual o preço final?',
+    options: { A: 'R$ 150,00', B: 'R$ 135,00', C: 'R$ 120,00', D: 'R$ 160,00' },
+    answer: 'B',
+    explanation: 'Primeiro desconto: 25% de R$200 = R$50. Novo preço: R$200 - R$50 = R$150. Segundo desconto: 10% de R$150 = R$15. Preço final: R$150 - R$15 = R$135.'
+  },
+  {
+    id: 82,
+    difficulty: Difficulty.HARD,
+    text: 'Em uma caixa há 4 bolas vermelhas, 3 verdes e 3 azuis. Uma bola verde foi retirada. Qual é a probabilidade de tirar uma bola azul?',
+    options: { A: '3/10', B: '3/9', C: '1/10', D: '3/11' },
+    answer: 'B',
+    explanation: 'Inicialmente, havia 10 bolas. Após retirar uma verde, restaram 9 bolas. A probabilidade de tirar uma das 3 bolas azuis é 3 em 9, ou 3/9.'
+  },
+  {
+    id: 83,
+    difficulty: Difficulty.HARD,
+    text: 'Um professor tem 157 folhas para dividir igualmente entre 12 alunos. Quantas folhas sobram para o professor?',
+    options: { A: '1', B: '3', C: '5', D: '9' },
+    answer: 'A',
+    explanation: 'Dividindo 157 por 12, temos 13 como quociente (12 x 13 = 156) e 1 como resto. Cada aluno recebe 13 folhas e sobra 1 para o professor.'
+  },
+  {
+    id: 84,
+    difficulty: Difficulty.HARD,
+    text: 'João comprou 2,5 kg de farinha. Quantos pacotes de 250 g ele pode encher completamente?',
+    options: { A: '5', B: '8', C: '10', D: '12' },
+    answer: 'C',
+    explanation: 'Primeiro, converta kg para g: 2,5 kg = 2500 g. Depois, divida o total pela capacidade de cada pacote: 2500 g / 250 g = 10 pacotes.'
+  },
+  {
+    id: 85,
+    difficulty: Difficulty.HARD,
+    text: 'Um retângulo tem 8 cm de comprimento e 3,5 cm de largura. Qual é a área da figura?',
+    options: { A: '28 cm²', B: '22 cm²', C: '23 cm²', D: '4,3 cm²' },
+    answer: 'A',
+    explanation: 'A área de um retângulo é calculada multiplicando o comprimento pela largura: 8 cm × 3,5 cm = 28 cm².'
+  },
+  {
+    id: 86,
+    difficulty: Difficulty.HARD,
+    text: 'Calcule o valor total da compra: 5 lápis a R$2,50 cada, 30 borrachas a R$1,50 cada e 10 réguas a R$3,00 cada.',
+    options: { A: 'R$ 110,50', B: 'R$ 46,50', C: 'R$ 55,50', D: 'R$ 87,50' },
+    answer: 'D',
+    explanation: 'O total é (5 × 2,50) + (30 × 1,50) + (10 × 3,00) = 12,50 + 45,00 + 30,00 = R$ 87,50.'
+  },
+  {
+    id: 87,
+    difficulty: Difficulty.HARD,
+    text: 'Daniel percorreu 250 metros, depois 300 metros e, por fim, 550 metros. Qual foi a distância total em quilômetros?',
+    options: { A: '1,1 km', B: '100 km', C: '10 km', D: '1,5 km' },
+    answer: 'A',
+    explanation: 'A soma das distâncias é 250 + 300 + 550 = 1100 metros. Como 1 km equivale a 1000 m, 1100 m é igual a 1,1 km.'
+  },
+  {
+    id: 88,
+    difficulty: Difficulty.HARD,
+    text: 'Em uma pesquisa, 40% dos 300 alunos de uma escola preferem matemática. Quantos alunos preferem matemática?',
+    options: { A: '100 alunos', B: '130 alunos', C: '120 alunos', D: '150 alunos' },
+    answer: 'C',
+    explanation: 'Para calcular 40% de 300, multiplicamos a porcentagem (em decimal) pelo total: 0,40 × 300 = 120 alunos.'
+  },
+  {
+    id: 89,
+    difficulty: Difficulty.HARD,
+    text: 'Em um jogo, uma equipe acertou 5 questões (+50 pts cada), errou 3 (-10 pts cada) e não respondeu 2 (-20 pts cada). Qual expressão calcula o total de pontos?',
+    options: { A: '(5x50) + (3x10) + (2x20)', B: '(5x50) + (3x10) - (2x20)', C: '(5x50) - (3x10) + (2x20)', D: '(5x50) - (3x10) - (2x20)' },
+    answer: 'D',
+    explanation: 'A pontuação é calculada somando os acertos e subtraindo as penalidades por erros e não respostas: (5×50) - (3×10) - (2×20) = 250 - 30 - 40 = 180.'
+  },
+  {
+    id: 90,
+    difficulty: Difficulty.HARD,
+    text: 'Um retângulo de 6x3 unidades tem sua largura multiplicada por 5 e seu comprimento dividido por 2. Qual a nova área?',
+    options: { A: '18', B: '24', C: '45', D: '9' },
+    answer: 'C',
+    explanation: 'A nova largura será 3 × 5 = 15. O novo comprimento será 6 ÷ 2 = 3. A nova área será 15 × 3 = 45 unidades quadradas.'
+  },
+  {
+    id: 91,
+    difficulty: Difficulty.HARD,
+    text: 'Uma reunião começou às 9h15 e terminou às 11h05. Quanto tempo durou a reunião?',
+    options: { A: '2h 05min', B: '1h 50min', C: '3h 05min', D: '1h 05min' },
+    answer: 'B',
+    explanation: 'De 9h15 para 10h15, passa-se 1 hora. De 10h15 para 11h05, passam-se mais 50 minutos. A duração total é de 1 hora e 50 minutos.'
+  },
+  {
+    id: 92,
+    difficulty: Difficulty.HARD,
+    text: 'Qual é a sequência correta dos números 0,42; 0,402; 0,403; 0,410 em ordem crescente?',
+    options: { A: '0,402 < 0,403 < 0,410 < 0,42', B: '0,42 < 0,410 < 0,403 < 0,402', C: '0,410 < 0,402 < 0,403 < 0,42', D: '0,403 < 0,402 < 0,42 < 0,410' },
+    answer: 'A',
+    explanation: 'Para comparar, igualamos as casas decimais: 0,420, 0,402, 0,403, 0,410. A ordem do menor para o maior é 0,402, 0,403, 0,410, 0,420.'
+  },
+  {
+    id: 93,
+    difficulty: Difficulty.HARD,
+    text: 'Qual das opções representa corretamente a fração "um quarto"?',
+    options: { A: '0,33 ou 33%', B: '0,25 ou 25%', C: '0,75 ou 75%', D: '0,5 ou 50%' },
+    answer: 'B',
+    explanation: 'A fração "um quarto" (1/4) é igual a 1 dividido por 4, que resulta em 0,25. Em porcentagem, 0,25 equivale a 25%.'
+  },
+  {
+    id: 94,
+    difficulty: Difficulty.HARD,
+    text: 'De acordo com o gráfico, quantos alunos o 5º ano da Escola 4 tem a mais que o 5º ano da Escola 3?',
+    options: { A: '20 alunos', B: '40 alunos', C: '30 alunos', D: '10 alunos' },
+    answer: 'B',
+    explanation: 'Observando o gráfico, a Escola 4 tem 100 alunos e a Escola 3 tem 60. A diferença é 100 - 60 = 40 alunos.'
+  },
+  {
+    id: 95,
+    difficulty: Difficulty.HARD,
+    text: 'De acordo com a tabela, qual ano escolar teve o maior número de inscritos na "Mostra Científica"?',
+    options: { A: '4º ano', B: '5º ano', C: '6º ano', D: '7º ano' },
+    answer: 'B',
+    explanation: 'Somando meninas e meninos: 4º ano = 79, 5º ano = 80, 6º ano = 77, 7º ano = 72. O 5º ano teve mais inscritos.'
+  },
+  {
+    id: 96,
+    difficulty: Difficulty.HARD,
+    text: 'Ana gastou R$ 25,00 para fazer 100 doces e vendeu o cento por R$ 50,00. Qual foi o lucro dela em porcentagem?',
+    options: { A: '25%', B: '20%', C: '50%', D: '100%' },
+    answer: 'D',
+    explanation: 'O lucro foi de R$ 50,00 - R$ 25,00 = R$ 25,00. Como o lucro (R$25) foi igual ao custo (R$25), o lucro percentual foi de 100%.'
+  },
+  {
+    id: 97,
+    difficulty: Difficulty.HARD,
+    text: 'Quais alunos encontraram frações equivalentes? (Ana: 5/10, Léo: 2/4, Guto: 3/4)',
+    options: { A: 'Ana e Guto', B: 'Léo e Guto', C: 'Ana e Léo', D: 'Juca e Léo' },
+    answer: 'C',
+    explanation: 'A fração de Ana (5/10) pode ser simplificada para 1/2. A fração de Léo (2/4) também pode ser simplificada para 1/2. Portanto, as frações de Ana e Léo são equivalentes.'
+  },
+  {
+    id: 98,
+    difficulty: Difficulty.HARD,
+    text: 'Um telhado foi desenhado em uma malha quadriculada (1 metro por lado). Quantos metros de calha são necessários para cobrir todo o seu contorno?',
+    options: { A: '28m', B: '40m', C: '30m', D: '50m' },
+    answer: 'C',
+    explanation: 'Ao somar todos os segmentos que formam o contorno externo do telhado na malha, o comprimento total é de 30 metros.'
+  },
+  {
+    id: 99,
+    difficulty: Difficulty.HARD,
+    text: 'Elias quer escolher 1 livro de cada disciplina: 5 de Matemática, 4 de Ciências e 3 de História. De quantas maneiras diferentes ele pode fazer essa escolha?',
+    options: { A: '12', B: '40', C: '30', D: '60' },
+    answer: 'D',
+    explanation: 'Pelo Princípio Fundamental da Contagem, multiplicamos o número de opções para cada escolha: 5 × 4 × 3 = 60 maneiras diferentes.'
+  },
+  {
+    id: 100,
+    difficulty: Difficulty.HARD,
+    text: 'Numa malha quadriculada (1cm²), qual a área da piscina e da cerâmica ao redor, conforme o desenho?',
+    options: { A: '48cm² e 72cm²', B: '40cm² e 70cm²', C: '30cm² e 60cm²', D: '42cm² e 70cm²' },
+    answer: 'A',
+    explanation: 'A piscina tem 6x8 = 48 quadrados (48 cm²). A área total (piscina + cerâmica) é 10x12 = 120 quadrados. A área da cerâmica é 120 - 48 = 72 cm².'
+  },
+  {
+    id: 101,
+    difficulty: Difficulty.HARD,
+    text: 'João tem 6 balas de morango, 8 de chocolate e 5 de menta. Qual é a probabilidade de ele retirar, sem olhar, uma bala de menta?',
+    options: { A: '5/10', B: '5/19', C: '5/5', D: '10/5' },
+    answer: 'B',
+    explanation: 'O total de balas é 6 + 8 + 5 = 19. A chance de pegar uma de menta é o número de balas de menta (5) sobre o total de balas (19).'
+  },
+  {
+    id: 102,
+    difficulty: Difficulty.HARD,
+    text: 'Observe o quadrado escuro na malha. Qual das figuras representa uma ampliação que mantém as proporções?',
+    options: { A: 'A', B: 'B', C: 'C', D: 'D' },
+    answer: 'C',
+    explanation: 'O quadrado original tem 2x2. Uma ampliação proporcional deve manter a razão dos lados, resultando em um quadrado maior, como a figura C que é 4x4.'
+  },
+  {
+    id: 103,
+    difficulty: Difficulty.HARD,
+    text: 'Carlos precisa de uma cerâmica com quatro lados, onde pelo menos dois lados não sejam paralelos. Qual figura ele deve escolher?',
+    options: { A: 'Losango', B: 'Quadrado', C: 'Trapézio', D: 'Paralelogramo' },
+    answer: 'C',
+    explanation: 'O trapézio é a única figura listada que tem um par de lados paralelos e um par de lados não paralelos, satisfazendo a condição.'
+  },
+  {
+    id: 104,
+    difficulty: Difficulty.HARD,
+    text: 'Ana precisa comprar 2 litros de um produto de limpeza vendido em embalagens de 250 ml. Quantas embalagens ela precisa comprar?',
+    options: { A: '6 embalagens', B: '4 embalagens', C: '8 embalagens', D: '10 embalagens' },
+    answer: 'C',
+    explanation: 'Dois litros correspondem a 2000 ml. Dividindo o total necessário pelo volume de cada embalagem (2000 ml / 250 ml), obtemos 8 embalagens.'
+  },
+  {
+    id: 105,
+    difficulty: Difficulty.HARD,
+    text: 'A fração 75/100 representa 75%. Qual é a sua forma simplificada?',
+    options: { A: '1/3', B: '3/4', C: '2/5', D: '2/4' },
+    answer: 'B',
+    explanation: 'Para simplificar 75/100, dividimos o numerador e o denominador pelo maior divisor comum, que é 25. Isso resulta em 3/4.'
   }
 ];
