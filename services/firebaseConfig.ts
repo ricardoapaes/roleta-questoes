@@ -1,11 +1,16 @@
-// Cole aqui a configuração do seu projeto Firebase
-// Você pode encontrar isso nas configurações do seu projeto no console do Firebase
-// Configurações do Projeto > Geral > Seus apps > App da Web > Configuração do SDK
+// Configuração Web do Firebase (não Service Account)
+// Para obter essas configurações:
+// 1. Vá ao Console do Firebase (https://console.firebase.google.com)
+// 2. Selecione seu projeto "roleta-questoes"
+// 3. Clique no ícone de engrenagem > Configurações do projeto
+// 4. Role para baixo até "Seus apps" > clique no app web
+// 5. Copie a configuração que aparece
+
 export const firebaseConfig = {
-  apiKey: "COLOQUE_SUA_API_KEY_AQUI",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  projectId: "SEU_PROJETO_ID",
-  storageBucket: "SEU_PROJETO.appspot.com",
-  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-  appId: "SEU_APP_ID"
+  apiKey: "AIzaSyD-9tSrke72PouQMnMX-a7UMAR_js_L9WI", // Substitua pela sua API Key
+  authDomain: "roleta-questoes.firebaseapp.com",
+  projectId: "roleta-questoes",
+  storageBucket: "roleta-questoes.appspot.com",
+  messagingSenderId: "123456789012", // Substitua pelo seu Sender ID
+  appId: "1:123456789012:web:0123456789abcdef012345" // Substitua pelo seu App ID
 };
