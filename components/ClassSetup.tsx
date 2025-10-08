@@ -9,12 +9,13 @@ interface ClassSetupProps {
 
 const ClassSetup: React.FC<ClassSetupProps> = ({ classes, onSelectClass, onCreateClass }) => {
   const [newClassName, setNewClassName] = useState('');
-  const [selectedClassId, setSelectedClassId] = useState(classes[0]?.id || '');
+  const [selectedClassId, setSelectedClassId] = useState(''); // Alterado para começar vazio
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (newClassName.trim()) {
       onCreateClass(newClassName.trim());
+      setNewClassName(''); // Limpa o campo após criar
     }
   };
 
@@ -66,15 +67,16 @@ const ClassSetup: React.FC<ClassSetupProps> = ({ classes, onSelectClass, onCreat
               className="w-full px-4 py-3 text-lg text-gray-800 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white disabled:bg-gray-200"
               aria-label="Selecionar turma existente"
             >
+              <option value="" disabled>Selecione uma turma</option> {/* Opção vazia padrão */}
               {classes.length === 0 ? (
-                <option>Nenhuma turma criada</option>
+                <option disabled>Nenhuma turma criada</option>
               ) : (
                 classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)
               )}
             </select>
             <button
               type="submit"
-              disabled={classes.length === 0}
+              disabled={!selectedClassId} {/* Desabilita se nada for selecionado */}
               className="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-green-700 disabled:bg-gray-400 transition-transform transform hover:scale-105"
             >
               Carregar
