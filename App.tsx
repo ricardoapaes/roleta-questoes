@@ -8,10 +8,10 @@ import ClassSetup from './components/ClassSetup';
 import HistoryScreen from './components/HistoryScreen';
 import RoundTracker from './components/RoundTracker';
 import ContinuePrompt from './components/ContinuePrompt';
-import { questionBanks } from './services/questionBanks';
-import { getClasses, saveClasses } from './services/storageService';
+import { questionBanks } from './src/services/questionBanks'; // Caminho corrigido
+import { getClasses, saveClasses } from './src/services/storageService'; // Caminho corrigido
 import { Difficulty, Question, GamePhase, Team, ClassData, GameSession } from './types';
-import { useAuth } from './src/context/AuthContext'; // Importar o hook useAuth
+import { useAuth } from './src/context/AuthContext';
 
 const POINTS_MAP: Record<Difficulty, number> = {
   [Difficulty.HARD]: 3,
@@ -31,7 +31,7 @@ const TEAM_COLORS = [
 ];
 
 const App: React.FC = () => {
-  const { user, signOut } = useAuth(); // Usar o hook useAuth
+  const { user, signOut } = useAuth();
   const [gamePhase, setGamePhase] = useState<GamePhase>(GamePhase.CLASS_SETUP);
   const [allClasses, setAllClasses] = useState<ClassData[]>([]);
   const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
@@ -49,25 +49,25 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      if (user) { // Carregar classes apenas se o usuário estiver logado
+      if (user) {
         const classesFromDb = await getClasses();
         setAllClasses(classesFromDb);
       } else {
-        setAllClasses([]); // Limpar classes se o usuário deslogar
+        setAllClasses([]);
       }
     };
     loadData();
-  }, [user]); // Dependência do usuário para recarregar classes
+  }, [user]);
 
   const handleCreateClass = useCallback((name: string) => {
-    if (!user) return; // Não permite criar classe sem usuário logado
+    if (!user) return;
     const newClass: ClassData = {
       id: crypto.randomUUID(),
       name,
       teams: [],
       answeredQuestionIds: [],
       gameHistory: [],
-      userId: user.uid, // Associar a classe ao ID do usuário
+      userId: user.uid,
     };
     const updatedClasses = [...allClasses, newClass];
     setAllClasses(updatedClasses);
@@ -77,7 +77,7 @@ const App: React.FC = () => {
   }, [allClasses, user]);
 
   const handleSelectClass = useCallback((id: string) => {
-    const foundClass = allClasses.find(c => c.id === id && c.userId === user?.uid); // Filtrar por userId
+    const foundClass = allClasses.find(c => c.id === id && c.userId === user?.uid);
     if (foundClass) {
       setSelectedClass(foundClass);
       setGamePhase(GamePhase.GAME_SETUP);
@@ -150,8 +150,10 @@ const App: React.FC = () => {
       setTimeout(() => {
         const finalAngle = newRotation % 360;
         let selectedDifficulty: Difficulty;
-        if (winningAngle >= 0 && winningAngle < 120) selectedDifficulty = Difficulty.HARD;
-        else if (winningAngle >= 120 && winningAngle < 240) selectedDifficulty = Difficulty.EASY;
+        // Determine difficulty based on finalAngle
+        // Assuming 3 sections: 0-120 (Hard), 120-240 (Easy), 240-360 (Medium)
+        if (finalAngle >= 0 && finalAngle < 120) selectedDifficulty = Difficulty.HARD;
+        else if (finalAngle >= 120 && finalAngle < 240) selectedDifficulty = Difficulty.EASY;
         else selectedDifficulty = Difficulty.MEDIUM;
         
         const question = getQuestionByDifficulty(selectedDifficulty);
@@ -347,7 +349,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      {user && ( // Mostrar botão de logout apenas se o usuário estiver logado
+      {user && (
         <button
           onClick={signOut}
           className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600 transition-colors z-50"
