@@ -16,9 +16,9 @@ const difficultyColors: Record<Difficulty, { bg: string; text: string }> = {
 const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionAnswered }) => {
   const [answeredOption, setAnsweredOption] = useState<string | null>(null);
   
-  // Inicializa os sons
-  const { play: playCorrectSound } = useSound('/sounds/correct.mp3');
-  const { play: playIncorrectSound } = useSound('/sounds/incorrect.mp3');
+  // Inicializa os sons com o BASE_URL para compatibilidade com produção
+  const { play: playCorrectSound } = useSound(import.meta.env.BASE_URL + 'sounds/correct.mp3');
+  const { play: playIncorrectSound } = useSound(import.meta.env.BASE_URL + 'sounds/incorrect.mp3');
 
   useEffect(() => {
     setAnsweredOption(null);
