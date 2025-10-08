@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Question, Difficulty } from '../types';
+import useSound from '../src/hooks/useSound'; // Importando o hook useSound
 
 interface QuestionDisplayProps {
   question: Question | null;
@@ -15,6 +16,10 @@ const difficultyColors: Record<Difficulty, { bg: string; text: string }> = {
 const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionAnswered }) => {
   const [answeredOption, setAnsweredOption] = useState<string | null>(null);
   
+  // Inicializa os sons
+  const { play: playCorrectSound } = useSound('/sounds/correct.mp3');
+  const { play: playIncorrectSound } = useSound('/sounds/incorrect.mp3');
+
   useEffect(() => {
     setAnsweredOption(null);
   }, [question]);
@@ -41,6 +46,12 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, onQuestionA
 
     setAnsweredOption(optionKey);
     const isCorrect = optionKey === answer;
+
+    if (isCorrect) {
+      playCorrectSound();
+    } else {
+      playIncorrectSound();
+    }
 
     setTimeout(() => {
       onQuestionAnswered(isCorrect);
