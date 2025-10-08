@@ -74,9 +74,10 @@ const ClassSetup: React.FC<ClassSetupProps> = ({ classes, onSelectClass, onCreat
                 classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)
               )}
             </select>
+            {/* Desabilita se nada for selecionado */}
             <button
               type="submit"
-              disabled={!selectedClassId} {/* Desabilita se nada for selecionado */}
+              disabled={!selectedClassId}
               className="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-green-700 disabled:bg-gray-400 transition-transform transform hover:scale-105"
             >
               Carregar
