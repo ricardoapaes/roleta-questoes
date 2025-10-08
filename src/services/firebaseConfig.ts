@@ -7,7 +7,7 @@
 // 5. Copie a configuração que aparece
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCvWrqrmwHbiWXatCs0sA2nrpSg1GjgVCU", // Substitua pela sua API Key
+  apiKey: "SUA_API_KEY_CORRETA_AQUI", // <--- SUBSTITUA ESTE VALOR PELA SUA CHAVE REAL
   authDomain: "roleta-questoes.firebaseapp.com",
   projectId: "roleta-questoes",
   storageBucket: "roleta-questoes.appspot.com",
