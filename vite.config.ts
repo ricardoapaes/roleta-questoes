@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
+      // Base path para GitHub Pages (nome do repositório)
+      base: process.env.NODE_ENV === 'production' ? '/roleta-questoes/' : '/',
       server: {
         port: 3000,
         host: '0.0.0.0',

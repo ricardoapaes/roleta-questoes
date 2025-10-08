@@ -33,6 +33,7 @@ const ClassSetup: React.FC<ClassSetupProps> = ({ classes, onSelectClass, onCreat
     e.preventDefault();
     if (newClassName.trim()) {
       onCreateClass(newClassName.trim());
+      setNewClassName(''); // Limpa o campo após criar
     }
   };
 
@@ -87,37 +88,25 @@ const ClassSetup: React.FC<ClassSetupProps> = ({ classes, onSelectClass, onCreat
         <div className="bg-white p-6 rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Selecionar Turma Existente</h2>
           <form onSubmit={handleSelect} className="flex flex-col gap-4">
-             {classes.length === 0 ? (
-                <div className="text-center py-8 px-4 border-2 border-dashed rounded-lg">
-                    <p className="text-gray-500">Nenhuma turma foi criada ainda.</p>
-                    <p className="text-gray-400 text-sm">Use o campo acima para criar sua primeira turma!</p>
-                </div>
-             ) : (
-                <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
-                    {classes.map(c => (
-                        <button
-                            key={c.id}
-                            type="button"
-                            onClick={() => setSelectedClassId(c.id)}
-                            className={`w-full flex items-center justify-between text-left p-4 border rounded-lg transition-all duration-200 ${
-                                selectedClassId === c.id 
-                                ? 'bg-indigo-50 border-indigo-500 ring-2 ring-indigo-200' 
-                                : 'bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300'
-                            }`}
-                        >
-                           <div className="flex items-center gap-4">
-                             <UsersIcon />
-                             <span className="font-bold text-lg text-gray-700">{c.name}</span>
-                           </div>
-                           {selectedClassId === c.id && <CheckCircleIcon />}
-                        </button>
-                    ))}
-                </div>
-             )}
+            <select
+              value={selectedClassId}
+              onChange={(e) => setSelectedClassId(e.target.value)}
+              disabled={classes.length === 0}
+              className="w-full px-4 py-3 text-lg text-gray-800 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white disabled:bg-gray-200"
+              aria-label="Selecionar turma existente"
+            >
+              <option value="" disabled>Selecione uma turma</option> {/* Opção vazia padrão */}
+              {classes.length === 0 ? (
+                <option disabled>Nenhuma turma criada</option>
+              ) : (
+                classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)
+              )}
+            </select>
+            {/* Desabilita se nada for selecionado */}
             <button
               type="submit"
-              disabled={!selectedClassId || classes.length === 0}
-              className="w-full mt-2 px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-transform transform hover:scale-105"
+              disabled={!selectedClassId}
+              className="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg shadow-md hover:bg-green-700 disabled:bg-gray-400 transition-transform transform hover:scale-105"
             >
               Carregar Turma
             </button>
