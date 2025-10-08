@@ -11,6 +11,7 @@ import ContinuePrompt from './components/ContinuePrompt';
 import { questionBanks } from './services/questionBanks';
 import { getClasses, saveClasses } from './services/storageService';
 import { Difficulty, Question, GamePhase, Team, ClassData, GameSession } from './types';
+import { useAuth } from './src/context/AuthContext'; // Importar o hook useAuth
 
 const POINTS_MAP: Record<Difficulty, number> = {
   [Difficulty.HARD]: 3,
@@ -30,6 +31,7 @@ const TEAM_COLORS = [
 ];
 
 const App: React.FC = () => {
+  const { user, signOut } = useAuth(); // Usar o hook useAuth
   const [gamePhase, setGamePhase] = useState<GamePhase>(GamePhase.CLASS_SETUP);
   const [allClasses, setAllClasses] = useState<ClassData[]>([]);
   const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
@@ -47,34 +49,40 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const classesFromDb = await getClasses();
-      setAllClasses(classesFromDb);
+      if (user) { // Carregar classes apenas se o usuário estiver logado
+        const classesFromDb = await getClasses();
+        setAllClasses(classesFromDb);
+      } else {
+        setAllClasses([]); // Limpar classes se o usuário deslogar
+      }
     };
     loadData();
-  }, []);
+  }, [user]); // Dependência do usuário para recarregar classes
 
   const handleCreateClass = useCallback((name: string) => {
+    if (!user) return; // Não permite criar classe sem usuário logado
     const newClass: ClassData = {
       id: crypto.randomUUID(),
       name,
       teams: [],
       answeredQuestionIds: [],
       gameHistory: [],
+      userId: user.uid, // Associar a classe ao ID do usuário
     };
     const updatedClasses = [...allClasses, newClass];
     setAllClasses(updatedClasses);
     saveClasses(updatedClasses);
     setSelectedClass(newClass);
     setGamePhase(GamePhase.GAME_SETUP);
-  }, [allClasses]);
+  }, [allClasses, user]);
 
   const handleSelectClass = useCallback((id: string) => {
-    const foundClass = allClasses.find(c => c.id === id);
+    const foundClass = allClasses.find(c => c.id === id && c.userId === user?.uid); // Filtrar por userId
     if (foundClass) {
       setSelectedClass(foundClass);
       setGamePhase(GamePhase.GAME_SETUP);
     }
-  }, [allClasses]);
+  }, [allClasses, user]);
 
   const handleStartGame = useCallback((
     teamsConfig: { id: number; name: string }[],
@@ -141,7 +149,6 @@ const App: React.FC = () => {
       
       setTimeout(() => {
         const finalAngle = newRotation % 360;
-        const winningAngle = 360 - finalAngle;
         let selectedDifficulty: Difficulty;
         if (winningAngle >= 0 && winningAngle < 120) selectedDifficulty = Difficulty.HARD;
         else if (winningAngle >= 120 && winningAngle < 240) selectedDifficulty = Difficulty.EASY;
@@ -255,7 +262,7 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (gamePhase) {
       case GamePhase.CLASS_SETUP:
-        return <ClassSetup classes={allClasses} onCreateClass={handleCreateClass} onSelectClass={handleSelectClass} />;
+        return <ClassSetup classes={allClasses.filter(c => c.userId === user?.uid)} onCreateClass={handleCreateClass} onSelectClass={handleSelectClass} />;
       case GamePhase.GAME_SETUP:
         if (!selectedClass) return null;
         return (
@@ -338,7 +345,19 @@ const App: React.FC = () => {
     }
   };
 
-  return <>{renderContent()}</>;
+  return (
+    <>
+      {user && ( // Mostrar botão de logout apenas se o usuário estiver logado
+        <button
+          onClick={signOut}
+          className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600 transition-colors z-50"
+        >
+          Sair ({user.displayName || user.email})
+        </button>
+      )}
+      {renderContent()}
+    </>
+  );
 };
 
 export default App;

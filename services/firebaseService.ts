@@ -3,8 +3,8 @@ import { getFirestore, collection, getDocs, doc, writeBatch, setDoc, deleteDoc }
 import { firebaseConfig } from './firebaseConfig';
 import { ClassData } from '../types';
 
-// Inicializa o Firebase
-const app = initializeApp(firebaseConfig);
+// Inicializa o Firebase e exporta a instância do app
+export const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const classesCollectionRef = collection(db, 'classes');
