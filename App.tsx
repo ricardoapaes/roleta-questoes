@@ -8,9 +8,10 @@ import ClassSetup from './components/ClassSetup';
 import HistoryScreen from './components/HistoryScreen';
 import RoundTracker from './components/RoundTracker';
 import ContinuePrompt from './components/ContinuePrompt';
-import { questionBanks } from './services/questionBanks';
-import { getClasses, saveClasses } from './services/storageService';
+import { questionBanks } from './src/services/questionBanks'; // Caminho corrigido
+import { getClasses, saveClasses } from './src/services/storageService'; // Caminho corrigido
 import { Difficulty, Question, GamePhase, Team, ClassData, GameSession } from './types';
+import { useAuth } from './src/context/AuthContext';
 
 const POINTS_MAP: Record<Difficulty, number> = {
   [Difficulty.HARD]: 3,
@@ -30,6 +31,7 @@ const TEAM_COLORS = [
 ];
 
 const App: React.FC = () => {
+  const { user, signOut } = useAuth();
   const [gamePhase, setGamePhase] = useState<GamePhase>(GamePhase.CLASS_SETUP);
   const [allClasses, setAllClasses] = useState<ClassData[]>([]);
   const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
@@ -47,34 +49,40 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const classesFromDb = await getClasses();
-      setAllClasses(classesFromDb);
+      if (user) {
+        const classesFromDb = await getClasses();
+        setAllClasses(classesFromDb);
+      } else {
+        setAllClasses([]);
+      }
     };
     loadData();
-  }, []);
+  }, [user]);
 
   const handleCreateClass = useCallback((name: string) => {
+    if (!user) return;
     const newClass: ClassData = {
       id: crypto.randomUUID(),
       name,
       teams: [],
       answeredQuestionIds: [],
       gameHistory: [],
+      userId: user.uid,
     };
     const updatedClasses = [...allClasses, newClass];
     setAllClasses(updatedClasses);
     saveClasses(updatedClasses);
     setSelectedClass(newClass);
     setGamePhase(GamePhase.GAME_SETUP);
-  }, [allClasses]);
+  }, [allClasses, user]);
 
   const handleSelectClass = useCallback((id: string) => {
-    const foundClass = allClasses.find(c => c.id === id);
+    const foundClass = allClasses.find(c => c.id === id && c.userId === user?.uid);
     if (foundClass) {
       setSelectedClass(foundClass);
       setGamePhase(GamePhase.GAME_SETUP);
     }
-  }, [allClasses]);
+  }, [allClasses, user]);
 
   const handleStartGame = useCallback((
     teamsConfig: { id: number; name: string }[],
@@ -141,10 +149,11 @@ const App: React.FC = () => {
       
       setTimeout(() => {
         const finalAngle = newRotation % 360;
-        const winningAngle = 360 - finalAngle;
         let selectedDifficulty: Difficulty;
-        if (winningAngle >= 0 && winningAngle < 120) selectedDifficulty = Difficulty.HARD;
-        else if (winningAngle >= 120 && winningAngle < 240) selectedDifficulty = Difficulty.EASY;
+        // Determine difficulty based on finalAngle
+        // Assuming 3 sections: 0-120 (Hard), 120-240 (Easy), 240-360 (Medium)
+        if (finalAngle >= 0 && finalAngle < 120) selectedDifficulty = Difficulty.HARD;
+        else if (finalAngle >= 120 && finalAngle < 240) selectedDifficulty = Difficulty.EASY;
         else selectedDifficulty = Difficulty.MEDIUM;
         
         const question = getQuestionByDifficulty(selectedDifficulty);
@@ -255,7 +264,7 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (gamePhase) {
       case GamePhase.CLASS_SETUP:
-        return <ClassSetup classes={allClasses} onCreateClass={handleCreateClass} onSelectClass={handleSelectClass} />;
+        return <ClassSetup classes={allClasses.filter(c => c.userId === user?.uid)} onCreateClass={handleCreateClass} onSelectClass={handleSelectClass} />;
       case GamePhase.GAME_SETUP:
         if (!selectedClass) return null;
         return (
@@ -338,7 +347,19 @@ const App: React.FC = () => {
     }
   };
 
-  return <>{renderContent()}</>;
+  return (
+    <>
+      {user && (
+        <button
+          onClick={signOut}
+          className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600 transition-colors z-50"
+        >
+          Sair ({user.displayName || user.email})
+        </button>
+      )}
+      {renderContent()}
+    </>
+  );
 };
 
 export default App;

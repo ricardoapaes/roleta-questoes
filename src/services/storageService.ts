@@ -1,4 +1,4 @@
-import { ClassData } from '../types';
+import { ClassData } from '../../types'; // Caminho corrigido
 import { getClassesFromFirestore, saveClassesToFirestore } from './firebaseService';
 
 export const getClasses = async (): Promise<ClassData[]> => {

@@ -1,5 +1,5 @@
 // FIX: Replaced placeholder content with a valid question bank module to resolve import and syntax errors.
-import { Difficulty, Question } from '../types';
+import { Difficulty, Question } from '../../types'; // Caminho corrigido
 
 export const subject = 'SAEB - Prova Brasil';
 export const questions: Question[] = [

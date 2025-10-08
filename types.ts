@@ -55,4 +55,5 @@ export interface ClassData {
   teams: { id: number; name: string }[];
   answeredQuestionIds: number[];
   gameHistory: GameSession[];
+  userId: string; // Adicionado para associar a classe a um usuário
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QuestionBank, ClassData } from '../types';
+import { questionBanks } from '../src/services/questionBanks'; // Caminho corrigido
 
 interface GameSetupProps {
   onStartGame: (teams: { id: number; name: string }[], bankId: string, rounds: number) => void;
